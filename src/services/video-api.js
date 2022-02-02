@@ -14,4 +14,15 @@ const fetchVideo = async (videoId) => {
 
   return data;
 };
-export { fetchTopVideo, fetchVideo };
+const fetchCast = async (id) => {
+  const url = `${BASE_URL}/${id}/credits?api_key=5eb7bc95e03c1a409c17dc93d6cf9c19&language=en-US`;
+  const { data } = await axios.get(url);
+  return data.cast;
+};
+const fetchInfo = async (id) => {
+  const url = `${BASE_URL}/${id}/reviews?api_key=5eb7bc95e03c1a409c17dc93d6cf9c19&language=en-US`;
+  const { data } = await axios.get(url);
+  return data.results;
+};
+
+export { fetchTopVideo, fetchVideo, fetchCast, fetchInfo };
