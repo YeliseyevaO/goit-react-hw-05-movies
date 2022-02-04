@@ -22,6 +22,10 @@ export default function Rewies({ id }) {
     getInfo();
   }, [id]);
 
+  if (info === []) {
+    return <p>We don't have any rewies for this movie</p>;
+  }
+
   return (
     <>
       {info && (

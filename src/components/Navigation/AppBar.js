@@ -7,7 +7,7 @@ const AppBar = () => (
       <NavLink
         to="/home"
         className={styles.link}
-        activeclassname={styles.activeLink}
+        style={({ isActive }) => ({ color: isActive ? "#008000" : " #2a363b" })}
       >
         Home
       </NavLink>
@@ -15,7 +15,7 @@ const AppBar = () => (
       <NavLink
         to="/movies"
         className={styles.link}
-        activeclassname={styles.activeLink}
+        style={({ isActive }) => ({ color: isActive ? "#008000" : " #2a363b" })}
       >
         Movies
       </NavLink>

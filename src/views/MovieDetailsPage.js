@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, Route, Routes } from "react-router-dom";
+import { useParams, Link, Route, Routes, useNavigate } from "react-router-dom";
 import { fetchVideo } from "../services/video-api";
 import Cast from "./Cast";
 import Rewies from "./Rewies";
+import styles from "./MoviesDetailsPage.module.css";
 
 export default function MovieDetailsPage() {
   let { movieId } = useParams();
+  const navigate = useNavigate();
   const [video, setVideo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,16 +39,25 @@ export default function MovieDetailsPage() {
 
   return (
     <>
+      <button type="button" onClick={() => navigate(-1)}>
+        Go back
+      </button>
       {video && (
         <>
-          <img
-            src={"https://image.tmdb.org/t/p/w300/" + video.poster_path}
-            alt={video.title}
-          />
-          <h2>{video.title}</h2>
-          <p>User Score: {video.popularity}</p>
-          <p>Overview: {video.overview}</p>
-          <p>Genres: {foundGenres()}</p>
+          {" "}
+          <div className={styles.box}>
+            <img
+              src={"https://image.tmdb.org/t/p/w300/" + video.poster_path}
+              alt={video.title}
+              className={styles.img}
+            />
+            <div>
+              <h2>{video.title}</h2>
+              <p>User Score: {video.popularity}</p>
+              <p>Overview: {video.overview}</p>
+              <p>Genres: {foundGenres()}</p>
+            </div>
+          </div>
           <div>
             <p>Additional information</p>
             <ul>
@@ -57,11 +68,11 @@ export default function MovieDetailsPage() {
                 <Link to={`/movies/${movieId}/rewies`}>Rewies</Link>
               </li>
             </ul>
-            <Routes>
-              <Route path="cast" element={<Cast id={movieId} />} />
-              <Route path="rewies" element={<Rewies id={movieId} />} />
-            </Routes>
           </div>
+          <Routes>
+            <Route path="cast" element={<Cast id={movieId} />} />
+            <Route path="rewies" element={<Rewies id={movieId} />} />
+          </Routes>
         </>
       )}
     </>

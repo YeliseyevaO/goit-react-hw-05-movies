@@ -24,5 +24,9 @@ const fetchInfo = async (id) => {
   const { data } = await axios.get(url);
   return data.results;
 };
-
-export { fetchTopVideo, fetchVideo, fetchCast, fetchInfo };
+const fetchWord = async (word) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=5eb7bc95e03c1a409c17dc93d6cf9c19&language=en-US&query=${word}&page=1`;
+  const { data } = await axios.get(url);
+  return data.results;
+};
+export { fetchTopVideo, fetchVideo, fetchCast, fetchInfo, fetchWord };
