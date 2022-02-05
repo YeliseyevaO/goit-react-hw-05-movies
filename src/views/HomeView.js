@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { fetchTopVideo } from "../services/video-api";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function HomeView() {
+  const location = useLocation();
+
+  console.log(location);
   const [topVideoList, setTopVideoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -29,7 +32,14 @@ export default function HomeView() {
         <ul>
           {topVideoList.map((video) => (
             <li key={video.id}>
-              <Link to={`/movies/${video.id}`}>{video.title}</Link>
+              <Link
+                to={{
+                  pathname: `/movies/${video.id}`,
+                  state: { from: location },
+                }}
+              >
+                {video.title}
+              </Link>
             </li>
           ))}
         </ul>

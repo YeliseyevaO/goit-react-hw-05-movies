@@ -1,42 +1,43 @@
 import { useState, useEffect } from "react";
 import { fetchWord } from "../services/video-api";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function MoviesPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [query, setQuery] = useState("");
-  const [word, setWord] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [movieList, setMovieList] = useState(null);
 
-  const handleChange = (e) => {
-    setQuery(e.currentTarget.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    setWord(query);
+    if (query.trim() === "") {
+      return;
+    }
+    navigate({ ...location, search: `?query=${query}` });
   };
 
   useEffect(() => {
-    if (word === "") {
+    if (location.search === "") {
       return;
     }
     setIsLoading(true);
     const getVideo = async () => {
+      const prevQuery = location.search.split("=")[1];
       try {
-        const data = await fetchWord(word);
+        const data = await fetchWord(prevQuery);
         console.log(data);
         setMovieList(data);
         setIsLoading(false);
-        setQuery("");
+        setQuery(prevQuery);
       } catch (error) {
         setError({ error });
         setIsLoading(false);
       }
     };
     getVideo();
-  }, [word]);
+  }, [location.search]);
 
   return (
     <>
@@ -47,7 +48,7 @@ export default function MoviesPage() {
           autoFocus
           placeholder="Search movies"
           value={query}
-          onChange={handleChange}
+          onChange={(e) => setQuery(e.target.value)}
         />
         <button type="submit">search</button>
       </form>
@@ -55,7 +56,15 @@ export default function MoviesPage() {
         <ul>
           {movieList.map((movie) => (
             <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+              <Link
+                to={{
+                  pathname: `/movies/${movie.id}`,
+                  state: { from: location },
+                }}
+              >
+                {" "}
+                {movie.title}
+              </Link>
             </li>
           ))}
         </ul>
