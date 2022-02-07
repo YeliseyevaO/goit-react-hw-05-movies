@@ -1,23 +1,27 @@
 import "./App.css";
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import AppBar from "./components/Navigation/AppBar";
-import HomeView from "./views/HomeView";
-import MovieDetailsPage from "./views/MovieDetailsPage";
-import MoviesPage from "./views/MoviesPage";
 import NotFoundView from "./views/NotFoundView";
 import Container from "./components/Container/Container";
+
+const AppBar = lazy(() => import("./components/Navigation/AppBar.js"));
+const HomeView = lazy(() => import("./views/HomeView.js"));
+const MoviesPage = lazy(() => import("./views/MoviesPage.js"));
+const MovieDetailsPage = lazy(() => import("./views/MovieDetailsPage.js"));
 
 function App() {
   return (
     <Container>
-      <Routes>
-        <Route path="/" element={<AppBar />}>
-          <Route path="/home" element={<HomeView />} />
-          <Route path="/movies" element={<MoviesPage />} />
-          <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
-          <Route path="*" element={<NotFoundView />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<h1>Загружаем</h1>}>
+        <Routes>
+          <Route path="/" element={<AppBar />}>
+            <Route path="/home" element={<HomeView />} />
+            <Route path="/movies" element={<MoviesPage />} />
+            <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
+            <Route path="*" element={<NotFoundView />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Container>
   );
 }

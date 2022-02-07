@@ -59,10 +59,9 @@ export default function MoviesPage() {
               <Link
                 to={{
                   pathname: `/movies/${movie.id}`,
-                  state: { from: location },
                 }}
+                state={{ from: location }}
               >
-                {" "}
                 {movie.title}
               </Link>
             </li>

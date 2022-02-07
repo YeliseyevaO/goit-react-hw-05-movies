@@ -35,8 +35,8 @@ export default function HomeView() {
               <Link
                 to={{
                   pathname: `/movies/${video.id}`,
-                  state: { from: location },
                 }}
+                state={{ from: location }}
               >
                 {video.title}
               </Link>
