@@ -12,7 +12,7 @@ const MovieDetailsPage = lazy(() => import("./views/MovieDetailsPage.js"));
 function App() {
   return (
     <Container>
-      <Suspense fallback={<h1>Загружаем</h1>}>
+      <Suspense fallback={<h1>Загружаем...</h1>}>
         <Routes>
           <Route path="/" element={<AppBar />}>
             <Route path="/home" element={<HomeView />} />

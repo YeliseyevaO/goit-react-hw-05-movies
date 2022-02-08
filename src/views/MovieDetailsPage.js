@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import {
   useParams,
   Link,
@@ -7,10 +7,11 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { fetchVideo } from "../services/video-api";
-import Cast from "./Cast";
-import Rewies from "./Rewies";
 import styles from "./MoviesDetailsPage.module.css";
+import { fetchVideo } from "../services/video-api";
+
+const Cast = lazy(() => import("./Cast"));
+const Rewies = lazy(() => import("./Rewies"));
 
 export default function MovieDetailsPage() {
   let { movieId } = useParams();
@@ -90,10 +91,12 @@ export default function MovieDetailsPage() {
               </li>
             </ul>
           </div>
-          <Routes>
-            <Route path="cast" element={<Cast id={movieId} />} />
-            <Route path="rewies" element={<Rewies id={movieId} />} />
-          </Routes>
+          <Suspense fallback={<h1>Загружаем...</h1>}>
+            <Routes>
+              <Route path="cast" element={<Cast id={movieId} />} />
+              <Route path="rewies" element={<Rewies id={movieId} />} />
+            </Routes>
+          </Suspense>
         </>
       )}
     </>
